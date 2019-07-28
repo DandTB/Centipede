@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeadCentipede: DestroyedObj {
+public class HeadCentipede: Enemys {
 
 
    
     public float speed;
+    //public bool haveTail;
 
-    //Vector2 start_pos;
+    Vector2 startPosicition;
     Vector2 direction;
     Vector2 temp_direction;
     Vector3 tempPosition;
-    float myTimer;
+  
 
     void Start() {
         HP = 1;
@@ -24,40 +25,42 @@ public class HeadCentipede: DestroyedObj {
     private void Update()
     {
         transform.right = -direction;
-        transform.position += new Vector3( direction.x,direction.y,0) * speed * Time.deltaTime;
+        transform.position += new Vector3(direction.x, direction.y, 0) * speed * Time.deltaTime;
 
-       
-       
 
         if (direction == Vector2.down)
         {
-            
-            //myTimer += Time.deltaTime;
-            //if (myTimer > 0.1f)
-            if((tempPosition.y - transform.position.y)>=1)
+
+
+            if ((tempPosition.y - transform.position.y) >= 1)
             {
                 tempPosition = transform.position;
-                if (temp_direction == Vector2.down) {
+                if (temp_direction == Vector2.down)
+                {
                     direction = Vector2.right;
                 }
                 else if (temp_direction == Vector2.left)
                 {
                     direction = Vector2.right;
-                   
-                }else if (temp_direction == Vector2.right)
+
+                }
+                else if (temp_direction == Vector2.right)
                 {
                     direction = Vector2.left;
-                    
+
                 }
-               
-                //myTimer = 0;
+
+
             }
-            
+
         }
-        if (HP < 1) {
+     
+        if (HP < 1)
+        {
+            Die();
             Destroy(transform.parent.gameObject);
         }
-    
+
     }
     
 

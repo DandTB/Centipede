@@ -43,6 +43,11 @@ public class Hero : DestroyedObj {
         if (transform.position.y < -30)
         {
             transform.position = new Vector3(transform.position.x,-30,0);
+
+        }
+        if (transform.position.y > -25)
+        {
+            transform.position = new Vector3(transform.position.x, -25, 0);
         }
     }
 

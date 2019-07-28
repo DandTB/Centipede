@@ -24,7 +24,7 @@ public class GameLogic : MonoBehaviour {
     
         All_Objects = new GameObject[25, 30];
          
-        DrawMushroom();
+       // DrawMushroom();
     }
 	
 
@@ -66,11 +66,20 @@ public class GameLogic : MonoBehaviour {
         }
     }
 
-    public void CreateCentipede( int size)
+    public void CreateCentipede( int size,  List<Vector2> positions)
     {
         GameObject newCent = Instantiate(pfbCentipede);
         newCent.GetComponent<CentipedeTail>().countTail = size-2;
-        
+        List<Vector2> temp = new List<Vector2>();
+
+        for (int i = 0; i<positions.Count; i++)
+        {
+            temp.Add(positions[i]);
+        }
+        temp.RemoveRange(0,size);
+
+        newCent.GetComponent<CentipedeTail>().positions = temp ;
+        print(temp[0]);
     }
 
 

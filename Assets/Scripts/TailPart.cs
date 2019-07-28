@@ -6,7 +6,7 @@ public class TailPart : Enemys{
 
     GameLogic gl;
     CentipedeTail CentipedeTail;
-    GameObject pfbmushroom;
+   
 
     public int Number { get; set; }
     
@@ -17,7 +17,7 @@ public class TailPart : Enemys{
         HP = 1;
         CentipedeTail = GetComponentInParent<CentipedeTail>();
         gl = GameObject.FindObjectOfType<GameLogic>();
-       pfbmushroom = Resources.Load<GameObject>("Prefabs/mushroom");
+      
     }
     
 	
@@ -27,13 +27,13 @@ public class TailPart : Enemys{
         {
             Die();
             Destroy(this.gameObject);
-            GameObject mush = Instantiate(pfbmushroom);
-            mush.transform.position = transform.position;
+            print(Number);
+           
 
             if (Number + 1 != CentipedeTail.countTail)
             {
 
-                gl.CreateCentipede(CentipedeTail.countTail - Number);
+                gl.CreateCentipede(CentipedeTail.countTail - Number, CentipedeTail.positions);
             }
 
             CentipedeTail.RemoveTail(Number);

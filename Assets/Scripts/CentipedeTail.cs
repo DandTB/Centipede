@@ -13,20 +13,17 @@ public class CentipedeTail : MonoBehaviour
 
     GameLogic gameLogic;
     GameObject head;
-   List<GameObject> ListCentipedePatrs;
-    List<Vector2> positions = new List<Vector2>();
+    List<GameObject> ListCentipedePatrs;
+    public List<Vector2> positions  = new List<Vector2>();
 
     private void Awake()
     {
         head = Instantiate(pfbhead, transform.position, Quaternion.identity, transform);
 
-      
+        
         ListCentipedePatrs = new List<GameObject>();
         positions.Add(head.transform.position);
-        //ListCentipedePatrs.Add(head);
-
-
-        //head.transform.right = transform.right;
+        
     }
 
     // Use this for initialization
@@ -37,12 +34,15 @@ public class CentipedeTail : MonoBehaviour
             AddTail();
 
         }
-
+        print("count in list positions in Start " + positions.Count);
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        
+
         countTail = ListCentipedePatrs.Count;
         Vector2 napr = (Vector2)head.transform.position - positions[0];
         float distance = napr.magnitude;
@@ -65,12 +65,13 @@ public class CentipedeTail : MonoBehaviour
             }
         }
 
-        
-        print("size tail" + ListCentipedePatrs.Count);
+       
+       
     }
     void AddTail()
     {
         GameObject tail = Instantiate(pfbTail, positions[positions.Count - 1], Quaternion.identity, transform);
+        tail.transform.right = head.transform.right;
         ListCentipedePatrs.Add(tail);
         positions.Add(tail.transform.position);
         tail.GetComponent<TailPart>().Number = ListCentipedePatrs.Count - 1;
@@ -78,16 +79,20 @@ public class CentipedeTail : MonoBehaviour
 
     }
     public void RemoveTail(int index) {
-        print("Remove element");
 
-        for (int i = index; i < ListCentipedePatrs.Count; i++)
+       
+
+        for (int i = index; i < countTail; i++)
         {
+
             Destroy(ListCentipedePatrs[i]);
-            ListCentipedePatrs.RemoveAt(i);
-            positions.RemoveAt(i+1);
+
         }
-        //ListCentipedePatrs.RemoveRange(index,countTail-index-1);
-        //positions.RemoveRange(index,countTail-index);
+
+        ListCentipedePatrs.RemoveRange(index, countTail-index);
+        positions.RemoveRange(index+1,countTail-index);
+        
+       
     }
 
   
