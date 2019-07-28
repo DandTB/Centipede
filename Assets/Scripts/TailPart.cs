@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TailPart : DestroyedObj{
+public class TailPart : Enemys{
 
     GameLogic gl;
     CentipedeTail CentipedeTail;
@@ -25,7 +25,7 @@ public class TailPart : DestroyedObj{
 	void Update () {
         if (HP < 1)
         {
-
+            Die();
             Destroy(this.gameObject);
             GameObject mush = Instantiate(pfbmushroom);
             mush.transform.position = transform.position;

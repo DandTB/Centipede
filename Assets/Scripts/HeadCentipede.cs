@@ -11,28 +11,32 @@ public class HeadCentipede: DestroyedObj {
     //Vector2 start_pos;
     Vector2 direction;
     Vector2 temp_direction;
-   
+    Vector3 tempPosition;
     float myTimer;
 
     void Start() {
         HP = 1;
         direction = Vector2.down;
         temp_direction = direction;
+        tempPosition = transform.position;
     }
 
     private void Update()
     {
-        transform.right = direction;
+        transform.right = -direction;
         transform.position += new Vector3( direction.x,direction.y,0) * speed * Time.deltaTime;
 
-
+       
+       
 
         if (direction == Vector2.down)
         {
             
-            myTimer += Time.deltaTime;
-            if (myTimer > 0.1f)
+            //myTimer += Time.deltaTime;
+            //if (myTimer > 0.1f)
+            if((tempPosition.y - transform.position.y)>=1)
             {
+                tempPosition = transform.position;
                 if (temp_direction == Vector2.down) {
                     direction = Vector2.right;
                 }
@@ -46,7 +50,7 @@ public class HeadCentipede: DestroyedObj {
                     
                 }
                
-                myTimer = 0;
+                //myTimer = 0;
             }
             
         }

@@ -40,6 +40,10 @@ public class Hero : DestroyedObj {
             print("GAME OVER");
 
         }
+        if (transform.position.y < -30)
+        {
+            transform.position = new Vector3(transform.position.x,-30,0);
+        }
     }
 
     void MoveLeft()

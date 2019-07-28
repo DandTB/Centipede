@@ -7,7 +7,7 @@ public class GameLogic : MonoBehaviour {
 
    public  GameObject pfbCentipede;
     GameObject pfb_Mushrooms;
-    public int[,] map = new int[30, 30];
+    public int[,] map = new int[25, 30];
   
     GameObject[,] All_Objects;
 
@@ -22,7 +22,7 @@ public class GameLogic : MonoBehaviour {
     void Start () {
 
     
-        All_Objects = new GameObject[30, 30];
+        All_Objects = new GameObject[25, 30];
          
         DrawMushroom();
     }
@@ -31,7 +31,7 @@ public class GameLogic : MonoBehaviour {
 
     void MushroomGenerator() {
  
-        for (int y = 1; y < 30; y++)
+        for (int y = 1; y < 25; y++)
         {
            for (int x = 0; x < 30; x++)
             {
@@ -50,14 +50,15 @@ public class GameLogic : MonoBehaviour {
     void DrawMushroom()
     {
         MushroomGenerator();
-        for (int y = 0; y < 30; y++)
+        for (int y = 0; y < 25; y++)
         {
             for (int x = 0; x < 30; x++)
             {
                 if (map[y, x] == 1)
                 {
                     GameObject c = Instantiate(pfb_Mushrooms);
-                    c.transform.position = new Vector3(x * 0.08f, 1-y * 0.08f, 0);
+                    
+                    c.transform.position = new Vector3(x, 1 - y , 0);
                     c.name = "mushroom";
                 }
             }
