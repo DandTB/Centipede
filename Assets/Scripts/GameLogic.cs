@@ -10,17 +10,23 @@ public class GameLogic : MonoBehaviour {
     public GameObject panelGameOver;
     public int[,] map = new int[25, 30];
     public int sizeCentipede;
+    public float speedCentipede;
 
     public static GameLogic Instance;
 
     [System.NonSerialized]
     public int Score;
+    [System.NonSerialized]
+    public int countMushromms;
+
 
     Hero hero;
     GameObject pfb_Mushrooms;
     GameObject pfbSpider;
-    float tempSpeed;
+    GameObject pfbAnt;
+   // float tempSpeed;
     float myTimer;
+ 
 
     private void Awake()
     {
@@ -28,10 +34,10 @@ public class GameLogic : MonoBehaviour {
         hero = GameObject.FindObjectOfType<Hero>();
         pfb_Mushrooms = Resources.Load<GameObject>("Prefabs/mushroom");
         pfbSpider = Resources.Load<GameObject>("Prefabs/Spider");
+        pfbAnt = Resources.Load<GameObject>("Prefabs/Ant");
 
-
-        tempSpeed = GameObject.FindObjectOfType<CentipedeTail>().speed;
-       // pfbCentipede = Resources.Load<GameObject>("Prefabs/Centipade");
+       // tempSpeed = GameObject.FindObjectOfType<CentipedeTail>().speed;
+        
     }
 
     void Start () {
@@ -52,6 +58,12 @@ public class GameLogic : MonoBehaviour {
         if (GameObject.FindObjectOfType<CentipedeTail>() == null) {
             CreateCentipede(sizeCentipede);
         }
+
+        if (countMushromms < 5 && GameObject.FindObjectOfType<AntController>()==null) {
+           print(123);
+            CreateAnt();
+        }
+        print(countMushromms);
     }
 
 
@@ -82,10 +94,11 @@ public class GameLogic : MonoBehaviour {
             {
                 if (map[y, x] == 1)
                 {
-                    GameObject c = Instantiate(pfb_Mushrooms);
+                   // GameObject c = Instantiate(pfb_Mushrooms);
                     
-                    c.transform.position = new Vector3(x, 1 - y , 0);
-                    c.name = "mushroom";
+                  //  c.transform.position = new Vector3(x, 1 - y , 0);
+                   // c.name = "mushroom";
+                    CreateMushroom(new Vector2(x, 1 - y)); 
                 }
             }
 
@@ -96,7 +109,7 @@ public class GameLogic : MonoBehaviour {
     {
         GameObject newCent = Instantiate(pfbCentipede);
         newCent.GetComponent<CentipedeTail>().countTail = size-2;
-        newCent.GetComponent<CentipedeTail>().speed = tempSpeed;
+        //newCent.GetComponent<CentipedeTail>().speed = speedCentipede;
         List<Vector2> temp = new List<Vector2>();
 
         for (int i = 0; i<positions.Count; i++)
@@ -106,15 +119,15 @@ public class GameLogic : MonoBehaviour {
         temp.RemoveRange(0,size);
 
         newCent.GetComponent<CentipedeTail>().startPos = temp ;
-        print(temp[0]);
+       
     }
 
     public void CreateCentipede(int size)
     {
-        tempSpeed++;
+        speedCentipede++;
         GameObject newCent = Instantiate(pfbCentipede);
         newCent.GetComponent<CentipedeTail>().countTail = size - 2;
-        newCent.GetComponent<CentipedeTail>().speed = tempSpeed; 
+       // newCent.GetComponent<CentipedeTail>().speed = speedCentipede; 
     }
     public void Reload_lvl()
     {
@@ -133,6 +146,17 @@ public class GameLogic : MonoBehaviour {
         Destroy(spider,10.0f);
     }
 
-    
+    public void CreateAnt()
+    {
+        Vector2 ant_pos = new Vector2(Random.Range(1, 29), 2);
+        GameObject ant = Instantiate(pfbAnt);
+        ant.transform.position = ant_pos;
+        Destroy(ant, 10.0f);
+    }
 
+    public void CreateMushroom(Vector2 position) {
+        GameObject mush = Instantiate(pfb_Mushrooms);
+        mush.transform.position = position;
+        mush.name = "mushroom";
+    }
 }

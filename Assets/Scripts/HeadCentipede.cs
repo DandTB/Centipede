@@ -20,7 +20,7 @@ public class HeadCentipede: Enemys {
         direction = Vector2.down;
         temp_direction = direction;
         tempPosition = transform.position;
-        speed = GetComponentInParent<CentipedeTail>().speed;
+        speed = GameLogic.Instance.speedCentipede;
     }
 
     private void Update()

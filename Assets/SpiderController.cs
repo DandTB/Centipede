@@ -27,6 +27,7 @@ public class SpiderController : Enemys {
     {
         if (HP < 1) {
             Die();
+            GameLogic.Instance.Score += 300;
             Destroy(this.gameObject);
         }
 
@@ -37,6 +38,7 @@ public class SpiderController : Enemys {
         if (coll.gameObject.GetComponent<Mushroom>() != null) {
             int rand = Random.Range(0,1);
             if (rand == 0) {
+                GameLogic.Instance.countMushromms--;
                 Destroy(coll.gameObject);
             }
         }

@@ -232,7 +232,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AntController.cs" />
     <Compile Include="Assets\LifeUI.cs" />
+    <Compile Include="Assets\PlayerZone.cs" />
     <Compile Include="Assets\ScoreUI.cs" />
     <Compile Include="Assets\Scripts\CentipedeTail.cs" />
     <Compile Include="Assets\Scripts\DestroyedObj.cs" />

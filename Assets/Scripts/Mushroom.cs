@@ -10,27 +10,41 @@ public class Mushroom : DestroyedObj {
     // Use this for initialization
     void Awake () {
         HP = 4;
-        
+
         
 	}
-  
-	// Update is called once per frame
-	void Update () {
-        if (HP == 3) {
+    private void Start()
+    {
+        if (transform.position.y < -20)
+        {
+            GameLogic.Instance.countMushromms++;
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (HP == 3)
+        {
             GetComponent<SpriteRenderer>().sprite = mushroom_sprites[0];
         }
-        else if (HP == 2)
+        if (HP == 2)
         {
             GetComponent<SpriteRenderer>().sprite = mushroom_sprites[1];
         }
-        else if (HP == 1)
+        if (HP == 1)
         {
             GetComponent<SpriteRenderer>().sprite = mushroom_sprites[2];
         }
-        else if (HP<1)
+        if (HP < 1)
         {
             GameLogic.Instance.Score += 1;
+            GameLogic.Instance.speedCentipede -= 0.1f;
+          
             Destroy(this.gameObject);
+            if (transform.position.y < -20)
+            { 
+                GameLogic.Instance.countMushromms-=1;
+            }
         }
     }
 }

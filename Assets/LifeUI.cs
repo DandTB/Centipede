@@ -17,7 +17,7 @@ public class LifeUI : MonoBehaviour {
         {
             life.Add(GameObject.Find("life_" + (i + 1)));
         }
-        print(life.Count);
+       
     }
 
     // Update is called once per frame

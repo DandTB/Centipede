@@ -9,7 +9,7 @@ public class CentipedeTail : MonoBehaviour
     public GameObject pfbTail;
     public float sizeSprite;
     public int countTail;
-    public float speed;
+   
 
     GameLogic gameLogic;
     GameObject head;

@@ -29,7 +29,7 @@ public class TailPart : Enemys{
             GameLogic.Instance.Score += 10;
 
             Destroy(this.gameObject);
-            print(Number);
+          
            
 
             if (Number + 1 != CentipedeTail.countTail)
