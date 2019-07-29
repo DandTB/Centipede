@@ -232,20 +232,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\AntController.cs" />
-    <Compile Include="Assets\LifeUI.cs" />
-    <Compile Include="Assets\PlayerZone.cs" />
-    <Compile Include="Assets\ScoreUI.cs" />
+    <Compile Include="Assets\Scripts\AntController.cs" />
     <Compile Include="Assets\Scripts\CentipedeTail.cs" />
     <Compile Include="Assets\Scripts\DestroyedObj.cs" />
     <Compile Include="Assets\Scripts\Enemys.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
     <Compile Include="Assets\Scripts\HeadCentipede.cs" />
     <Compile Include="Assets\Scripts\Hero.cs" />
+    <Compile Include="Assets\Scripts\LifeUI.cs" />
     <Compile Include="Assets\Scripts\Mushroom.cs" />
+    <Compile Include="Assets\Scripts\ScoreUI.cs" />
     <Compile Include="Assets\Scripts\ShotMove.cs" />
+    <Compile Include="Assets\Scripts\SoundManager.cs" />
+    <Compile Include="Assets\Scripts\SpiderController.cs" />
     <Compile Include="Assets\Scripts\TailPart.cs" />
-    <Compile Include="Assets\SpiderController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

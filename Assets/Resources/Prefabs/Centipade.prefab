@@ -55,3 +55,5 @@ MonoBehaviour:
   pfbTail: {fileID: 1118586425617472, guid: 302bf8af2e8dee347990e01d5f6487ab, type: 2}
   sizeSprite: 1
   countTail: 10
+  positions: []
+  startPos: []

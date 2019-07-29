@@ -6,29 +6,30 @@ public class HeadCentipede: Enemys {
 
 
    
-    float speed;
-    //public bool haveTail;
+    float speed; // скорость головы 
 
-    Vector2 startPosicition;
-    Vector2 direction;
-    Vector2 temp_direction;
-    Vector3 tempPosition;
-  
+
+    Vector2 startPosicition;// стартовая позиция головы
+    Vector2 direction; // направления движения головы
+    Vector2 temp_direction; // предыдущее направление
+    Vector3 tempPosition; // для временного хранения позиции
+
 
     void Start() {
-        HP = 1;
-        direction = Vector2.down;
-        temp_direction = direction;
-        tempPosition = transform.position;
-        speed = GameLogic.Instance.speedCentipede;
+        HP = 1; // у головы 1 жизнь, как и любой части хвоста
+        direction = Vector2.down; //начальное направление - вниз
+        temp_direction = direction; // предыдущее так же запишем со страта  - вниз
+        tempPosition = transform.position; // получим текущее положение, для использования как предыдущее
+        speed = GameLogic.Instance.speedCentipede; // получим скорость движения
     }
 
     private void Update()
     {
+        // развернем голову и начнем двигать
         transform.right = -direction;
         transform.position += new Vector3(direction.x, direction.y, 0) * speed * Time.deltaTime;
 
-
+        // проверям направление, для движения вниз на одинаковое растояние и последующего поворота
         if (direction == Vector2.down)
         {
 
@@ -55,7 +56,7 @@ public class HeadCentipede: Enemys {
             }
 
         }
-     
+        // если выстрел попал в голову, уничтожаем полностью всю гусеницу и добавляем 100 очков
         if (HP < 1)
         {
             Die();
@@ -64,8 +65,8 @@ public class HeadCentipede: Enemys {
         }
 
     }
-    
 
+    // меняем направление движения в зависимости от предыдущего направления и точки столкновения
     private void OnCollisionEnter2D (Collision2D col)
     {
         temp_direction = direction;
@@ -85,11 +86,13 @@ public class HeadCentipede: Enemys {
                 direction = Vector2.down;
             }
         }
+        // если столкнулись с героем то уничтожаем героя
         if (col.gameObject.GetComponent<Hero>() != null) {
             Die();
             col.gameObject.GetComponent<Hero>().Die();
             Destroy(transform.parent.gameObject);
         }
+        // если дошли до низа, то конец игры
         if (col.gameObject.name == "bottom") {
             GameLogic.Instance.GameOver();
         }

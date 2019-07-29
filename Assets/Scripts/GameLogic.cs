@@ -6,27 +6,28 @@ using UnityEngine.SceneManagement;
 public class GameLogic : MonoBehaviour {
 
 
-    public GameObject pfbCentipede;
-    public GameObject panelGameOver;
-    public int[,] map = new int[25, 30];
-    public int sizeCentipede;
-    public float speedCentipede;
+    public GameObject pfbCentipede; // префаб гусеницы
+    public GameObject panelGameOver; // панель геймовер
+    public int[,] map = new int[25, 30]; // матрица для генерации грибов
+    public int sizeCentipede; // размер гусеницы
+    public float speedCentipede; // скорость гусеницы
 
-    public static GameLogic Instance;
+    public static GameLogic Instance; // синглтон
 
+    // не отображаем в инспекторе счет и кол-во грибов в игровой зоне героя
     [System.NonSerialized]
     public int Score;
     [System.NonSerialized]
     public int countMushromms;
 
+    bool play;
+    Hero hero; // дял получения доступа к скрипту героя
+    GameObject pfb_Mushrooms; // префаб гриба
+    GameObject pfbSpider;// префаб паука
+    GameObject pfbAnt;//префаб муравья
+   
+    float myTimer; // таймер
 
-    Hero hero;
-    GameObject pfb_Mushrooms;
-    GameObject pfbSpider;
-    GameObject pfbAnt;
-   // float tempSpeed;
-    float myTimer;
- 
 
     private void Awake()
     {
@@ -36,37 +37,41 @@ public class GameLogic : MonoBehaviour {
         pfbSpider = Resources.Load<GameObject>("Prefabs/Spider");
         pfbAnt = Resources.Load<GameObject>("Prefabs/Ant");
 
-       // tempSpeed = GameObject.FindObjectOfType<CentipedeTail>().speed;
         
     }
 
     void Start () {
         Instance = this;
-        DrawMushroom();
+        DrawMushroom(); // отображаем грибы
+        StartCoroutine("GoPlay"); //запускаем гусеницу
+
     }
     private void Update()
     {
+        // создаем паука каждые 8 сек
         myTimer += Time.deltaTime;
-        if (myTimer>7) {
+        if (myTimer>8) {
             CreateSpider();
             myTimer = 0;
         }
-        if (hero.HP < 1) {
+        if (hero.HP < 1) { // если нет жизни, то геймовер
+            
             GameOver();
             
         }
-        if (GameObject.FindObjectOfType<CentipedeTail>() == null) {
+        // если нет гусеницы, создаем новую, с указанным размером
+        if (GameObject.FindObjectOfType<CentipedeTail>() == null && play) { 
             CreateCentipede(sizeCentipede);
         }
-
-        if (countMushromms < 5 && GameObject.FindObjectOfType<AntController>()==null) {
-           print(123);
+        // если грибов в игровой зоне меньше 5 и нет муравья. то создаем нового муравья
+        if (countMushromms < 5 && GameObject.FindObjectOfType<AntController>()==null) {//
+         
             CreateAnt();
         }
-        print(countMushromms);
+        
     }
 
-
+    // рандомно заполянем матрицу еденицами и нулями
     void MushroomGenerator() {
  
         for (int y = 1; y < 25; y++)
@@ -85,6 +90,7 @@ public class GameLogic : MonoBehaviour {
         }
     }
 
+    // в единицах создаем грибы
     void DrawMushroom()
     {
         MushroomGenerator();
@@ -94,51 +100,48 @@ public class GameLogic : MonoBehaviour {
             {
                 if (map[y, x] == 1)
                 {
-                   // GameObject c = Instantiate(pfb_Mushrooms);
-                    
-                  //  c.transform.position = new Vector3(x, 1 - y , 0);
-                   // c.name = "mushroom";
+                   
                     CreateMushroom(new Vector2(x, 1 - y)); 
                 }
             }
 
         }
     }
-
+    // создаем гусеницу задавая размер и позицию
     public void CreateCentipede( int size,  List<Vector2> positions)
     {
         GameObject newCent = Instantiate(pfbCentipede);
-        newCent.GetComponent<CentipedeTail>().countTail = size-2;
-        //newCent.GetComponent<CentipedeTail>().speed = speedCentipede;
+        newCent.GetComponent<CentipedeTail>().countTail = size-2; // размер на 2 меньше (минус часть хвоста и голову) 
         List<Vector2> temp = new List<Vector2>();
-
-        for (int i = 0; i<positions.Count; i++)
+        
+        for (int i = 0; i<positions.Count; i++) 
         {
             temp.Add(positions[i]);
         }
-        temp.RemoveRange(0,size);
+        temp.RemoveRange(0,size);// удалим лишние позиции
+        newCent.GetComponent<CentipedeTail>().startPos = temp; //  передаем позиции новой гусенице
 
-        newCent.GetComponent<CentipedeTail>().startPos = temp ;
-       
     }
-
+    // создаем гусеницу задавая только размер
     public void CreateCentipede(int size)
     {
         speedCentipede++;
         GameObject newCent = Instantiate(pfbCentipede);
         newCent.GetComponent<CentipedeTail>().countTail = size - 2;
-       // newCent.GetComponent<CentipedeTail>().speed = speedCentipede; 
     }
+    // обработка нажатия кнопки начать игру
     public void Reload_lvl()
     {
         SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
     }
-
+    // при проиграше ставим паузу и вызываем панель
     public void GameOver() {
+        
         Time.timeScale = 0;
         panelGameOver.SetActive(true);
+      
     }
-
+    // создаем паука на 10 сек
     void CreateSpider() {
         Vector2 spider_pos = new Vector2(Random.Range(1,29),-20);
         GameObject spider = Instantiate(pfbSpider);
@@ -146,6 +149,7 @@ public class GameLogic : MonoBehaviour {
         Destroy(spider,10.0f);
     }
 
+    // создаем мурявья на 10 сек
     public void CreateAnt()
     {
         Vector2 ant_pos = new Vector2(Random.Range(1, 29), 2);
@@ -153,10 +157,16 @@ public class GameLogic : MonoBehaviour {
         ant.transform.position = ant_pos;
         Destroy(ant, 10.0f);
     }
-
+    // создаем гриб в указанной позиции
     public void CreateMushroom(Vector2 position) {
         GameObject mush = Instantiate(pfb_Mushrooms);
         mush.transform.position = position;
         mush.name = "mushroom";
+    }
+    // откладываем создаение первой гусеницы на 3 секунды
+    public IEnumerator GoPlay() {
+        yield return new WaitForSeconds(3.0f);
+        CreateCentipede(10);
+        play = true;
     }
 }

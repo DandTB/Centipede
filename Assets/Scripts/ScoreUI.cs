@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class ScoreUI : MonoBehaviour {
 
-	
-	
-	// Update is called once per frame
-	void Update () {
+
+    // получем и выводим очки на экран
+  
+    void Update () {
         GetComponent<Text>().text = GameLogic.Instance.Score.ToString();
 	}
 }
