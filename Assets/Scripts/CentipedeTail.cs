@@ -9,39 +9,54 @@ public class CentipedeTail : MonoBehaviour
     public GameObject pfbTail;
     public float sizeSprite;
     public int countTail;
-
+    public float speed;
 
     GameLogic gameLogic;
     GameObject head;
     List<GameObject> ListCentipedePatrs;
-    public List<Vector2> positions  = new List<Vector2>();
+    public List<Vector2> positions = new List<Vector2>();
+    public List<Vector2> startPos;
 
     private void Awake()
     {
-        head = Instantiate(pfbhead, transform.position, Quaternion.identity, transform);
+        //head = Instantiate(pfbhead, transform.position, Quaternion.identity, transform);
+        //positions.Add(head.transform.position);
 
-        
         ListCentipedePatrs = new List<GameObject>();
-        positions.Add(head.transform.position);
+      
         
     }
 
     // Use this for initialization
     void Start()
     {
-        for (int i = 0; i < countTail; i++)
+        if (startPos.Count == 0)
         {
-            AddTail();
+            head = Instantiate(pfbhead, transform.position, Quaternion.identity, transform);
+            positions.Add(head.transform.position);
+            for (int i = 0; i < countTail; i++)
+            {
+                AddTail(); 
 
+            }
         }
-        print("count in list positions in Start " + positions.Count);
+        else {
+            head = Instantiate(pfbhead, startPos[0], Quaternion.identity, transform);
+            positions.Add(head.transform.position);
+            for (int i = 0; i < countTail; i++)
+            {
+                AddTail(startPos);
+
+            }
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        
+       
 
         countTail = ListCentipedePatrs.Count;
         Vector2 napr = (Vector2)head.transform.position - positions[0];
@@ -70,6 +85,8 @@ public class CentipedeTail : MonoBehaviour
     }
     void AddTail()
     {
+      
+
         GameObject tail = Instantiate(pfbTail, positions[positions.Count - 1], Quaternion.identity, transform);
         tail.transform.right = head.transform.right;
         ListCentipedePatrs.Add(tail);
@@ -78,6 +95,20 @@ public class CentipedeTail : MonoBehaviour
         
 
     }
+
+    void AddTail(List<Vector2> pos)
+    {
+        
+
+        GameObject tail = Instantiate(pfbTail, positions[positions.Count - 1], Quaternion.identity, transform);
+        tail.transform.right = head.transform.right;
+        ListCentipedePatrs.Add(tail);
+        positions.Add(tail.transform.position);
+        tail.GetComponent<TailPart>().Number = ListCentipedePatrs.Count - 1;
+
+
+    }
+
     public void RemoveTail(int index) {
 
        

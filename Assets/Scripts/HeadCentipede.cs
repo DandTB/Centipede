@@ -6,7 +6,7 @@ public class HeadCentipede: Enemys {
 
 
    
-    public float speed;
+    float speed;
     //public bool haveTail;
 
     Vector2 startPosicition;
@@ -20,6 +20,7 @@ public class HeadCentipede: Enemys {
         direction = Vector2.down;
         temp_direction = direction;
         tempPosition = transform.position;
+        speed = GetComponentInParent<CentipedeTail>().speed;
     }
 
     private void Update()
@@ -58,6 +59,7 @@ public class HeadCentipede: Enemys {
         if (HP < 1)
         {
             Die();
+            GameLogic.Instance.Score += 100;
             Destroy(transform.parent.gameObject);
         }
 
@@ -82,6 +84,14 @@ public class HeadCentipede: Enemys {
             {
                 direction = Vector2.down;
             }
+        }
+        if (col.gameObject.GetComponent<Hero>() != null) {
+            Die();
+            col.gameObject.GetComponent<Hero>().Die();
+            Destroy(transform.parent.gameObject);
+        }
+        if (col.gameObject.name == "bottom") {
+            GameLogic.Instance.GameOver();
         }
     }
 

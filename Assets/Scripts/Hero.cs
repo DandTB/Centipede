@@ -6,12 +6,15 @@ public class Hero : DestroyedObj {
 
 
     public float speed = 2;
+    
 
     GameObject pfbShot;
+    Vector2 startPos;
 	// Use this for initialization
 	void Awake () {
         pfbShot = Resources.Load<GameObject>("Prefabs/shot");
         HP = 3;
+        startPos = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -34,11 +37,6 @@ public class Hero : DestroyedObj {
         }
         if (Input.GetKeyDown(KeyCode.Space)) {
             Shot();
-        }
-        if (HP <= 0)
-        {
-            print("GAME OVER");
-
         }
         if (transform.position.y < -30)
         {
@@ -80,5 +78,22 @@ public class Hero : DestroyedObj {
     void Shot() {
         GameObject temp = Instantiate(pfbShot);
         temp.transform.position = transform.position+ new Vector3(0,0.09f,0);
+    }
+
+   
+    public override void Die()
+    {
+        base.Die();
+        GetComponent<SpriteRenderer>().color = new Color32(255,255,255,0);
+        transform.position = startPos;
+        StartCoroutine("SetAlphaColor");
+        HP--;
+
+    }
+     
+    IEnumerator  SetAlphaColor() {
+        GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
+        yield return new WaitForSeconds(2.0f);
+       
     }
 }

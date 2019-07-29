@@ -29,6 +29,7 @@ public class Mushroom : DestroyedObj {
         }
         else if (HP<1)
         {
+            GameLogic.Instance.Score += 1;
             Destroy(this.gameObject);
         }
     }

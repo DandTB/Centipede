@@ -1,32 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLogic : MonoBehaviour {
 
 
-   public  GameObject pfbCentipede;
-    GameObject pfb_Mushrooms;
+    public GameObject pfbCentipede;
+    public GameObject panelGameOver;
     public int[,] map = new int[25, 30];
-  
-    GameObject[,] All_Objects;
+    public int sizeCentipede;
 
+    public static GameLogic Instance;
+
+    [System.NonSerialized]
+    public int Score;
+
+    Hero hero;
+    GameObject pfb_Mushrooms;
+    GameObject pfbSpider;
+    float tempSpeed;
+    float myTimer;
 
     private void Awake()
     {
-
+        Time.timeScale = 1;
+        hero = GameObject.FindObjectOfType<Hero>();
         pfb_Mushrooms = Resources.Load<GameObject>("Prefabs/mushroom");
+        pfbSpider = Resources.Load<GameObject>("Prefabs/Spider");
+
+
+        tempSpeed = GameObject.FindObjectOfType<CentipedeTail>().speed;
        // pfbCentipede = Resources.Load<GameObject>("Prefabs/Centipade");
     }
 
     void Start () {
-
-    
-        All_Objects = new GameObject[25, 30];
-         
-       // DrawMushroom();
+        Instance = this;
+        DrawMushroom();
     }
-	
+    private void Update()
+    {
+        myTimer += Time.deltaTime;
+        if (myTimer>7) {
+            CreateSpider();
+            myTimer = 0;
+        }
+        if (hero.HP < 1) {
+            GameOver();
+            
+        }
+        if (GameObject.FindObjectOfType<CentipedeTail>() == null) {
+            CreateCentipede(sizeCentipede);
+        }
+    }
 
 
     void MushroomGenerator() {
@@ -70,6 +96,7 @@ public class GameLogic : MonoBehaviour {
     {
         GameObject newCent = Instantiate(pfbCentipede);
         newCent.GetComponent<CentipedeTail>().countTail = size-2;
+        newCent.GetComponent<CentipedeTail>().speed = tempSpeed;
         List<Vector2> temp = new List<Vector2>();
 
         for (int i = 0; i<positions.Count; i++)
@@ -78,9 +105,34 @@ public class GameLogic : MonoBehaviour {
         }
         temp.RemoveRange(0,size);
 
-        newCent.GetComponent<CentipedeTail>().positions = temp ;
+        newCent.GetComponent<CentipedeTail>().startPos = temp ;
         print(temp[0]);
     }
 
+    public void CreateCentipede(int size)
+    {
+        tempSpeed++;
+        GameObject newCent = Instantiate(pfbCentipede);
+        newCent.GetComponent<CentipedeTail>().countTail = size - 2;
+        newCent.GetComponent<CentipedeTail>().speed = tempSpeed; 
+    }
+    public void Reload_lvl()
+    {
+        SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GameOver() {
+        Time.timeScale = 0;
+        panelGameOver.SetActive(true);
+    }
+
+    void CreateSpider() {
+        Vector2 spider_pos = new Vector2(Random.Range(1,29),-20);
+        GameObject spider = Instantiate(pfbSpider);
+        spider.transform.position = spider_pos;
+        Destroy(spider,10.0f);
+    }
+
+    
 
 }

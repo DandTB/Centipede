@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TailPart : Enemys{
 
-    GameLogic gl;
+    
     CentipedeTail CentipedeTail;
    
 
@@ -16,7 +16,7 @@ public class TailPart : Enemys{
     {
         HP = 1;
         CentipedeTail = GetComponentInParent<CentipedeTail>();
-        gl = GameObject.FindObjectOfType<GameLogic>();
+     
       
     }
     
@@ -26,6 +26,8 @@ public class TailPart : Enemys{
         if (HP < 1)
         {
             Die();
+            GameLogic.Instance.Score += 10;
+
             Destroy(this.gameObject);
             print(Number);
            
@@ -33,7 +35,7 @@ public class TailPart : Enemys{
             if (Number + 1 != CentipedeTail.countTail)
             {
 
-                gl.CreateCentipede(CentipedeTail.countTail - Number, CentipedeTail.positions);
+               GameLogic.Instance.CreateCentipede(CentipedeTail.countTail - Number, CentipedeTail.positions);
             }
 
             CentipedeTail.RemoveTail(Number);
